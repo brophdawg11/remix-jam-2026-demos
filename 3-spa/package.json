@@ -1,0 +1,26 @@
+{
+  "name": "3-spa",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.3.0"
+  },
+  "dependencies": {
+    "remix": "3.0.0-rc.5"
+  },
+  "devDependencies": {
+    "@types/dom-navigation": "1.0.7",
+    "@types/node": "24.10.4",
+    "typescript": "7.0.2",
+    "vite": "7.3.3"
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "diff": "diff app/actions/garage/controller.tsx ../2-navigation/app/actions/garage/controller.tsx && diff app/router.ts ../2-navigation/app/router.ts",
+    "demo": "pnpm files && PORT=44103 pnpm dev",
+    "files": "code app/actions/garage/controller.tsx app/router.ts main.tsx",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  }
+}

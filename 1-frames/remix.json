@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/remix/schema/remix.json",
+  "assets": {
+    "rootDir": ".",
+    "basePath": "/assets",
+    "mounts": {
+      "app": "app",
+      "npm": "node_modules"
+    },
+    "allowFiles": ["app/routes.ts", "app/**/public/**"],
+    "allowPackages": ["remix"],
+    "denyFiles": ["app/**/*.test.*"]
+  }
+}

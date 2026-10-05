@@ -1,0 +1,25 @@
+{
+  "name": "2-navigation",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.3.0"
+  },
+  "dependencies": {
+    "remix": "3.0.0-rc.5"
+  },
+  "devDependencies": {
+    "@types/dom-navigation": "1.0.7",
+    "@types/node": "24.10.4",
+    "playwright": "1.60.0",
+    "typescript": "7.0.2"
+  },
+  "scripts": {
+    "dev": "NODE_ENV=development node --watch --import remix/node-tsx server.ts",
+    "demo": "pnpm files && PORT=44102 pnpm dev",
+    "files": "code app/actions/garage/workshop-page.tsx app/actions/garage/public/inventory-search.tsx app/actions/garage/public/inventory-panel.tsx app/actions/garage/public/part-list.tsx",
+    "start": "node --import remix/node-tsx server.ts",
+    "test": "NODE_ENV=test remix test",
+    "typecheck": "tsc --noEmit"
+  }
+}

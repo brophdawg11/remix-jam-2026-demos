@@ -1,0 +1,101 @@
+import { css, type Handle } from "remix/component";
+
+import { getParts, searchParts } from "../../data/public/catalog.ts";
+import type { PartCategory } from "../../data/public/catalog.ts";
+import type { Car } from "../../data/garage-store.ts";
+import { routes } from "../../routes.ts";
+import { PitNotes } from "./public/pit-notes.tsx";
+import { CarBuild } from "./public/car-build.tsx";
+import { InventoryPanel } from "./public/inventory-panel.tsx";
+import { InventorySearch } from "./public/inventory-search.tsx";
+import { colors, muted } from "../../ui/public/styles.ts";
+
+export function WorkshopPage(
+  handle: Handle<{
+    car: Car;
+    category: PartCategory;
+    query: string;
+    installError?: string;
+  }>,
+) {
+  return () => {
+    let { car, category, query, installError } = handle.props;
+    return (
+      <>
+        <nav aria-label="Breadcrumb" mix={breadcrumbStyle}>
+          <a href={routes.garage.index.href()}>Garage</a>
+          <span aria-hidden="true">/</span>
+          <span>{car.name}</span>
+        </nav>
+        <header mix={workshopHeader}>
+          <div>
+            <h1 mix={workshopTitle}>{car.name}</h1>
+          </div>
+          <p mix={[muted, css({ maxWidth: 420, margin: 0 })]}>
+            Browse by URL, install with a form, or drag a part onto the car for
+            an optimistic fit.
+          </p>
+        </header>
+        <div mix={workshopGrid}>
+          <div mix={css({ display: "grid", gap: 22, alignContent: "start" })}>
+            <CarBuild key={`build-${car.id}`} car={car} error={installError} />
+            <PitNotes key={`notes-${car.id}`} carId={car.id} />
+          </div>
+          <div mix={css({ display: "grid", gap: 22, alignContent: "start" })}>
+            <InventoryPanel
+              carId={car.id}
+              category={category}
+              query={query}
+              parts={getParts(category)}
+              installedParts={car.parts}
+            />
+            <InventorySearch
+              key={car.id}
+              carId={car.id}
+              category={category}
+              query={query}
+              parts={searchParts(query)}
+              installedParts={car.parts}
+            />
+          </div>
+        </div>
+      </>
+    );
+  };
+}
+
+const breadcrumbStyle = css({
+  display: "flex",
+  gap: 9,
+  marginBottom: 26,
+  color: colors.muted,
+  fontSize: 11,
+  "& a": { color: colors.ink, textUnderlineOffset: 3 },
+});
+const workshopHeader = css({
+  minHeight: 120,
+  marginBottom: 28,
+  paddingBottom: 22,
+  display: "flex",
+  alignItems: "end",
+  justifyContent: "space-between",
+  gap: 24,
+  borderBottom: `2px solid ${colors.ink}`,
+  "@media (max-width: 700px)": { alignItems: "start", flexDirection: "column" },
+});
+const workshopTitle = css({
+  margin: "5px 0 0",
+  fontFamily: "Georgia, 'Times New Roman', serif",
+  fontSize: "clamp(38px, 6vw, 64px)",
+  fontStyle: "italic",
+  fontWeight: 500,
+  letterSpacing: "-0.05em",
+  lineHeight: 1,
+});
+const workshopGrid = css({
+  display: "grid",
+  gridTemplateColumns: "minmax(0, 1.15fr) minmax(360px, 0.85fr)",
+  gap: 22,
+  alignItems: "start",
+  "@media (max-width: 900px)": { gridTemplateColumns: "1fr" },
+});
